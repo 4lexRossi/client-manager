@@ -8,6 +8,7 @@ from .forms import CustomerForm
 # Create your views here.
 class CustomerListView(ListView):
   template_name = "customer/customer_list.html"
+  paginate_by = 2
   model = Customer
   queryset = Customer.objects.all()
 
