@@ -9,7 +9,7 @@ from .forms import CustomerForm
 # Create your views here.
 class CustomerListView(ListView):
   template_name = "customer/customer_list.html"
-  paginate_by = 2
+  paginate_by = 5  
   model = Customer
   
   def get_queryset(self):
