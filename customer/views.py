@@ -1,6 +1,7 @@
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from .models import Customer
 from .forms import CustomerForm
@@ -10,7 +11,17 @@ class CustomerListView(ListView):
   template_name = "customer/customer_list.html"
   paginate_by = 2
   model = Customer
-  queryset = Customer.objects.all()
+  
+  def get_queryset(self):
+    name = self.request.GET.get("name")
+    if name:
+      object_list = self.model.objects.filter(
+        Q(first_name__icontains=name) | Q(last_name__icontains=name) |
+        Q(document_rg__icontains=name) | Q(document_cpf__icontains=name)
+        )
+    else:
+      object_list = self.model.objects.all()
+    return object_list
 
 class CustomerCreateView(CreateView):
   template_name = "customer/customer.html"
